@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>WEATHER API</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <link rel="stylesheet" href="./tut3.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="search m-5">
+                <input type="text" placeholder="Enter the city name">
+                <button><img src="./search-png-design-web-design-6.png" height="50px;" width="50px;"></button>
+            </div>
+            <div class="weather mt-5">
+                <img src="./cloud.png" class="weather-icon">
+                <h1 class="temp">21°C</h1>
+                <h2 class="city">Canada </h2>
+                <div class="details row mt-5">
+                    <div class="col-6 text-center">
+                        <img src="./humidity.png" height="100px">
+                        <div>
+                            <h5 class="humidity">50%</h5>
+                            <h5>HUMIDITY</h5>
+                        </div>
+                    </div>
+                    <div class="col-6 text-center">
+                        <img src="./wind.png" height="100px">
+                        <div>
+                            <h5 class="wind">12km/h</h5>
+                            <h5>Wind Speed</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+        const apikey="573e1f515c95614da2153ae91e042ca7";
+        const apiurl="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        
+        const searchbox=document.querySelector(".search input");
+        const searchbtn=document.querySelector(".search button");
+
+        async function checkWeather(city){
+            const response=await fetch(apiurl + city +`&appid=${apikey}`);
+            var data= await response.json();
+
+            console.log(data);
+            
+            document.querySelector(".city").innerHTML=data.name;
+            document.querySelector(".temp").innerHTML=Math.round(data.main.temp) + "°C";
+            document.querySelector(".humidity").innerHTML=data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML=data.wind.speed + " km/h";
+
+            const weather=document.querySelector(".weather-icon")
+            if(data.weather[0].main=="Clouds"){
+                weather.src= "./clouds.png";
+            }
+            else if(data.weather[0].main=="Clear"){
+                weather.src= "./clear-sky.png";
+            }
+            else if(data.weather[0].main=="Rain"){
+                weather.src= "./rain.png";
+            }
+            else if(data.weather[0].main=="Drizzle"){
+                weather.src= "./rain.png";
+            }
+            else if(data.weather[0].main=="Mist"){
+                weather.src= "./haze.png";
+            }
+        }  
+        searchbtn=addEventListener('click',()=>{
+            checkWeather(searchbox.value);
+        }) 
+        
+    </script>
+</body>
+</html>     
